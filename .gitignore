@@ -18,3 +18,8 @@ media/
 .idea/
 .vscode/
 *.log
+promo-video/audio/*.wav
+promo-video/audio/*.mp3
+promo-video/audio/vo/
+promo-video/cache/
+promo-video/screenshots/
