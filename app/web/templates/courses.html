@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row-head">
-  <h1>Курсы</h1>
-  {% if can_manage %}<a class="button" href="/courses/new">Создать курс</a>{% endif %}
+  <div>
+    <p class="eyebrow">Каталог</p>
+    <h1>Курсы</h1>
+  </div>
+  {% if can_manage %}<a class="button-primary" href="/courses/new">Создать курс</a>{% endif %}
 </div>
 
 {% if catalog %}
   <ul class="status-list">
     {% for course in catalog %}
       <li>
-        <a href="/courses/{{ course.id }}">{{ course.title }}</a>
-        <span class="pill">{{ course.status }} · v{{ course.version }}</span>
+        <div class="item-main">
+          <a href="/courses/{{ course.id }}">{{ course.title }}</a>
+        </div>
+        <div class="item-meta">
+          <span class="badge badge-{{ status_tone(course.status) }}">{{ course.status }}</span>
+          <span>v{{ course.version }}</span>
+        </div>
       </li>
     {% endfor %}
   </ul>
@@ -21,11 +29,17 @@
   <ul class="status-list">
     {% for course, enrollment in assigned %}
       <li>
-        <span>{{ course.title }}</span>
-        <span>{{ enrollment.status }}</span>
+        <div class="item-main">{{ course.title }}</div>
+        <div class="item-meta">
+          <span class="badge badge-{{ status_tone(enrollment.status) }}">{{ enrollment.status }}</span>
+        </div>
       </li>
     {% endfor %}
   </ul>
   <p class="hint">Проходите курс в Telegram: /courses</p>
+{% endif %}
+
+{% if not catalog and not assigned %}
+  <p class="empty">Пока нет доступных программ. Методист публикует курс, руководитель назначает его сотруднику.</p>
 {% endif %}
 {% endblock %}

@@ -52,3 +52,7 @@ pytest -q
 ## Архитектура
 
 [docs/architecture.md](docs/architecture.md)
+
+## Автор
+
+Автор проекта: Степанов Д.А.

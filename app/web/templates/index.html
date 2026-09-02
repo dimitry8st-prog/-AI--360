@@ -3,14 +3,17 @@
 <section class="hero">
   <p class="eyebrow">Этап 2 · обучение</p>
   <h1>Система запущена</h1>
-  <p>
+  <p class="lead">
     ДИС помогает учиться по утверждённым материалам. Сотрудник проходит курс в Telegram.
     Методист и руководитель работают в этой панели. Кадровые решения остаются за человеком.
   </p>
 </section>
 
 <ul class="status-list">
-  <li><span class="label">Окружение</span> <span>{{ app_env }}</span></li>
+  <li>
+    <span class="label">Окружение</span>
+    <span class="badge badge-info">{{ app_env }}</span>
+  </li>
   <li>
     <span class="label">LLM</span>
     <span class="pill {% if llm_mode == 'stub' %}pill-warn{% else %}pill-ok{% endif %}">{{ llm_mode }}</span>

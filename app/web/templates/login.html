@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+{% block title %}Вход · AI-наставник 360{% endblock %}
 {% block content %}
 <h1>Вход</h1>
 <p>Web-панель для методиста, руководителя и администратора. Сотрудник учится в Telegram.</p>
-<form method="post" action="/login" class="card">
+<form method="post" action="/login" class="form-row{% if error %} form-error{% endif %}" data-pending>
   <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-  <label>Email
-    <input type="email" name="email" required autocomplete="username">
+  <label class="field">
+    <span>Email</span>
+    <input id="email" type="email" name="email" required autocomplete="username">
   </label>
-  <label>Пароль
-    <input type="password" name="password" required autocomplete="current-password">
+  <label class="field">
+    <span>Пароль</span>
+    <span class="field-password">
+      <input id="password" type="password" name="password" required autocomplete="current-password">
+      <button type="button" class="toggle-password" data-password-toggle aria-controls="password" aria-pressed="false">Показать</button>
+    </span>
   </label>
-  <button type="submit">Войти</button>
+  <button type="submit" class="button-primary" data-pending-label="Входим…">Войти</button>
 </form>
 {% endblock %}

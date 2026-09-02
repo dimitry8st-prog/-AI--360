@@ -1,23 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
+<p class="eyebrow">Программа</p>
 <h1>{{ course.title }}</h1>
-<p>{{ course.description }}</p>
-<p>Статус: <strong>{{ course.status }}</strong>. Порог: {{ course.passing_score }}%. Квалификацию курс сам не подтверждает.</p>
+<p class="lead">{{ course.description }}</p>
+<p class="meta-line">
+  <span class="badge badge-{{ status_tone(course.status) }}">{{ course.status }}</span>
+  <span>Порог: {{ course.passing_score }}%</span>
+</p>
+<p class="hint">Квалификацию курс сам не подтверждает.</p>
 
 {% if can_manage and course.status != "published" %}
   <form method="post" action="/courses/{{ course.id }}/publish">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <button type="submit">Опубликовать</button>
+    <button type="submit" class="button-accent">Опубликовать</button>
   </form>
 {% endif %}
 
 <h2>Модули</h2>
-<ol>
-  {% for module in course.modules|sort(attribute="position") %}
-    <li>{{ module.title }} — {{ module.estimated_minutes }} мин. Цель: {{ module.learning_objectives }}</li>
-  {% endfor %}
-</ol>
+{% if course.modules %}
+  <ol class="module-list">
+    {% for module in course.modules|sort(attribute="position") %}
+      <li>
+        <div class="item-main">
+          <strong>{{ module.title }}</strong>
+          <p class="hint">Цель: {{ module.learning_objectives }}</p>
+        </div>
+        <div class="item-meta">{{ module.estimated_minutes }} мин.</div>
+      </li>
+    {% endfor %}
+  </ol>
+{% else %}
+  <p class="empty">Модулей ещё нет. Добавьте пять учебных шагов: объяснение, источник, вспоминание, пример и проверку.</p>
+{% endif %}
 {% if can_add_module %}
-  <a class="button" href="/courses/{{ course.id }}/modules/new">Добавить модуль</a>
+  <p><a class="button-primary" href="/courses/{{ course.id }}/modules/new">Добавить модуль</a></p>
 {% endif %}
 {% endblock %}

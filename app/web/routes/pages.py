@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai.providers import get_llm_provider
+from app.core.config import Settings
 from app.db.models.user import User
 from app.services.learning_service import own_progress_payload
 from app.web.deps import get_db, require_login
@@ -12,7 +13,7 @@ router = APIRouter(tags=["pages"])
 
 @router.get("/")
 async def index(request: Request):
-    settings = request.app.state.settings
+    settings = Settings()
     provider = get_llm_provider(settings)
     return render(
         request,

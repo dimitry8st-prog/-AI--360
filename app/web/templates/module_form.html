@@ -1,21 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
+<p class="eyebrow">Учебный блок</p>
 <h1>Модуль: пять учебных шагов</h1>
-<p>ДИС выдаст объяснение, источник, вопрос на вспоминание, пример и проверку понимания.</p>
-<form method="post" class="card">
+<p class="lead">ДИС выдаст объяснение, источник, вопрос на вспоминание, пример и проверку понимания.</p>
+<form method="post" class="card stack">
   <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-  <label>Название модуля <input name="title" required></label>
-  <label>Учебная цель <textarea name="learning_objectives" rows="2"></textarea></label>
-  <label>Минуты <input type="number" name="estimated_minutes" value="8"></label>
-  <label>Объяснение <textarea name="explain" rows="4" required></textarea></label>
-  <label>Подпись источника <input name="source_label"></label>
-  <label>Вопрос на вспоминание <textarea name="recall_prompt" required></textarea></label>
-  <label>Ориентир ответа (сотрудник не видит до отправки) <input name="recall_answer"></label>
-  <label>Рабочий пример <textarea name="example" rows="3" required></textarea></label>
-  <label>Вопрос проверки <textarea name="check_prompt" required></textarea></label>
-  <label>Варианты (каждый с новой строки) <textarea name="check_options" rows="4" required></textarea></label>
-  <label>Правильный вариант <input name="check_answer" required></label>
-  <label>Другое объяснение при ошибке <textarea name="alt_body" rows="3"></textarea></label>
-  <button type="submit">Сохранить модуль</button>
+  <label class="field">Название модуля <input name="title" required></label>
+  <label class="field">Учебная цель <textarea name="learning_objectives" rows="2"></textarea></label>
+  <label class="field">Минуты <input type="number" name="estimated_minutes" value="8"></label>
+  <label class="field">Объяснение <textarea name="explain" rows="4" required></textarea></label>
+  <label class="field">Подпись источника <input name="source_label"></label>
+  <label class="field">Вопрос на вспоминание <textarea name="recall_prompt" required></textarea></label>
+  <label class="field">Ориентир ответа (сотрудник не видит до отправки) <input name="recall_answer"></label>
+  <label class="field">Рабочий пример <textarea name="example" rows="3" required></textarea></label>
+  <label class="field">Вопрос проверки <textarea name="check_prompt" required></textarea></label>
+  <label class="field">Варианты (каждый с новой строки) <textarea name="check_options" rows="4" required></textarea></label>
+  <label class="field">Правильный вариант <input name="check_answer" required></label>
+  <label class="field">Другое объяснение при ошибке <textarea name="alt_body" rows="3"></textarea></label>
+  <button type="submit" class="button-primary">Сохранить модуль</button>
 </form>
 {% endblock %}

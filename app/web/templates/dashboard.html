@@ -2,19 +2,27 @@
 {% block content %}
 <p class="eyebrow">Панель</p>
 <h1>Здравствуйте, {{ current_user.full_name }}</h1>
-<p>Роли: {{ roles|join(", ") }}. ДИС не назначает должности и не увольняет.</p>
+<p class="lead">Роли: {{ roles|join(", ") }}. ДИС не назначает должности и не увольняет.</p>
 
 {% if progress %}
   <h2>Назначенные программы</h2>
   <ul class="status-list">
     {% for row in progress %}
       <li>
-        <span>{{ row.title }}</span>
-        <span>{{ row.percent }}% · {{ row.status }}</span>
+        <div class="item-main">
+          <strong>{{ row.title }}</strong>
+        </div>
+        <div class="item-meta">
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ row.percent }}" aria-label="Прогресс по курсу">
+            <div class="progress-bar" style="width: {{ row.percent }}%"></div>
+          </div>
+          <span>{{ row.percent }}%</span>
+          <span class="badge badge-{{ status_tone(row.status) }}">{{ row.status }}</span>
+        </div>
       </li>
     {% endfor %}
   </ul>
 {% else %}
-  <p class="hint">Назначенных курсов пока нет или эта роль работает с каталогом.</p>
+  <p class="empty">Назначенных курсов пока нет или эта роль работает с каталогом. ДИС подскажет следующий шаг в Telegram.</p>
 {% endif %}
 {% endblock %}

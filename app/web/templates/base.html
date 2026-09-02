@@ -3,26 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Степанов Д.А.">
   <title>{% block title %}{{ title or "AI-наставник 360" }}{% endblock %}</title>
-  <link rel="stylesheet" href="/static/css/app.css">
-  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+  <link rel="stylesheet" href="{{ request.url_for('static', path='css/app.css') }}?v=4">
+  <script src="{{ request.url_for('static', path='js/htmx.min.js') }}" defer></script>
+  <script src="{{ request.url_for('static', path='js/ui.js') }}" defer></script>
 </head>
-<body>
+<body class="{% block body_class %}layout-app{% endblock %}">
+  <a class="skip-link" href="#content">К содержанию</a>
+  {% block chrome %}
   <header class="topbar">
-    <div class="brand">
-      <span class="mascot" aria-hidden="true">🦊</span>
-      <div>
-        <strong>ДИС</strong>
-        <span class="muted">цифровой лис · AI-наставник 360</span>
-      </div>
-    </div>
-    <nav class="nav" aria-label="Основное меню">
+    <input class="nav-toggle" type="checkbox" id="nav-toggle" tabindex="-1">
+    <a class="brand" href="{% if current_user %}/dashboard{% else %}/{% endif %}">
+      <span class="mascot brand-icon" aria-hidden="true">🦊</span>
+      <span class="brand-text"><strong>ДИС</strong> <span class="muted">цифровой лис · AI-наставник 360</span></span>
+    </a>
+    <label class="nav-toggle-btn" for="nav-toggle" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+      <span class="nav-toggle-text">Меню</span>
+    </label>
+    <nav class="nav" id="site-nav" aria-label="Основное меню">
       {% if current_user %}
-        <a href="/dashboard">Панель</a>
-        <a href="/courses">Курсы</a>
-        <a href="/progress">Прогресс</a>
+        <a href="/dashboard" class="{{ 'is-active' if nav_is_active(request.url.path, '/dashboard') else '' }}">Панель</a>
+        <a href="/courses" class="{{ 'is-active' if nav_is_active(request.url.path, '/courses') else '' }}">Курсы</a>
+        <a href="/progress" class="{{ 'is-active' if nav_is_active(request.url.path, '/progress') else '' }}">Прогресс</a>
         {% if "manager" in current_user.role_names or "admin" in current_user.role_names %}
-          <a href="/assignments">Назначения</a>
+          <a href="/assignments" class="{{ 'is-active' if nav_is_active(request.url.path, '/assignments') else '' }}">Назначения</a>
         {% endif %}
         <span class="who">{{ current_user.full_name }}</span>
         <form class="inline" method="post" action="/logout">
@@ -30,17 +36,27 @@
           <button type="submit" class="linkish">Выйти</button>
         </form>
       {% else %}
-        <a href="/login">Вход</a>
+        <a href="/login" class="{{ 'is-active' if nav_is_active(request.url.path, '/login') else '' }}">Вход</a>
       {% endif %}
     </nav>
   </header>
-  <main class="container">
-    {% if notice %}<p class="banner banner-ok" role="status">{{ notice }}</p>{% endif %}
-    {% if error %}<p class="banner banner-risk" role="alert">{{ error }}</p>{% endif %}
+  {% endblock %}
+  <main id="content" class="{% block main_class %}container{% endblock %}">
+    {% block alerts %}
+      {% if notice %}<p class="banner banner-ok" role="status">{{ notice }}</p>{% endif %}
+      {% if error %}<p class="banner banner-risk" role="alert">{{ error }}</p>{% endif %}
+    {% endblock %}
     {% block content %}{% endblock %}
   </main>
-  <footer class="footer">
-    Бот не принимает кадровые решения и не подтверждает квалификацию без человека, если это требует политика программы.
+  {% block footer %}
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>AI-наставник 360 — обучение, практика и контроль знаний персонала</p>
+      <p>Автор проекта: Степанов Д.А.</p>
+      <p>© 2026. Все права защищены.</p>
+      <p class="site-footer-disclaimer">AI-наставник не принимает кадровые решения и не подтверждает квалификацию сотрудника без участия уполномоченного специалиста.</p>
+    </div>
   </footer>
+  {% endblock %}
 </body>
 </html>

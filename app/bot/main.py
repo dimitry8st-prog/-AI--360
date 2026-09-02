@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
 from redis.asyncio import Redis
 
@@ -29,9 +30,17 @@ async def run_bot() -> None:
         return
 
     session_factory = init_engine(settings)
-    redis_client = Redis.from_url(settings.redis_url, decode_responses=True)
-    await redis_client.ping()
-    storage = RedisStorage(redis=redis_client)
+    redis_client: Redis | None = None
+    storage: MemoryStorage | RedisStorage = MemoryStorage()
+    candidate = Redis.from_url(settings.redis_url, decode_responses=True)
+    try:
+        await candidate.ping()
+        redis_client = candidate
+        storage = RedisStorage(redis=redis_client)
+        logger.info("bot_redis_connected")
+    except Exception:
+        logger.warning("bot_redis_unavailable_using_memory_fsm")
+        await candidate.aclose()
     bot = Bot(
         settings.telegram_bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
@@ -47,7 +56,8 @@ async def run_bot() -> None:
         await dispatcher.start_polling(bot)
     finally:
         await bot.session.close()
-        await redis_client.aclose()
+        if redis_client is not None:
+            await redis_client.aclose()
         await dispose_engine()
         logger.info("bot_stopped")
 

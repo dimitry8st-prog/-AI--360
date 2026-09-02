@@ -1,5 +1,6 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import redis.asyncio as redis
 from fastapi import FastAPI, Request
@@ -75,7 +76,8 @@ def create_app() -> FastAPI:
             return RedirectResponse(f"/dashboard?error={exc.message}", status_code=303)
         return JSONResponse({"error": exc.code, "message": exc.message}, status_code=exc.status_code)
 
-    application.mount("/static", StaticFiles(directory="app/web/static"), name="static")
+    static_dir = Path(__file__).resolve().parent / "web" / "static"
+    application.mount("/static", StaticFiles(directory=static_dir), name="static")
     application.include_router(api_router)
     return application
 

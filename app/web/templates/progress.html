@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
+<p class="eyebrow">Обучение</p>
 <h1>Личный прогресс</h1>
 {% if rows %}
   <ul class="status-list">
     {% for row in rows %}
       <li>
-        <span>{{ row.title }}</span>
-        <span>{{ row.percent }}% · модулей {{ row.completed_modules }}/{{ row.total_modules }} · {{ row.status }}</span>
+        <div class="item-main">
+          <strong>{{ row.title }}</strong>
+          <p class="hint">Модулей {{ row.completed_modules }}/{{ row.total_modules }}</p>
+        </div>
+        <div class="item-meta">
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ row.percent }}" aria-label="Прогресс">
+            <div class="progress-bar" style="width: {{ row.percent }}%"></div>
+          </div>
+          <span>{{ row.percent }}%</span>
+          <span class="badge badge-{{ status_tone(row.status) }}">{{ row.status }}</span>
+        </div>
       </li>
     {% endfor %}
   </ul>
 {% else %}
-  <p>Назначенных курсов нет.</p>
+  <p class="empty">Назначенных курсов нет. Когда руководитель выдаст программу, ДИС откроет её в Telegram.</p>
 {% endif %}
 <p class="hint">Продолжить обучение: Telegram /continue</p>
 {% endblock %}
