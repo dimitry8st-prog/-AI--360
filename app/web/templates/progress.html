@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Личный прогресс</h1>
+{% if rows %}
+  <ul class="status-list">
+    {% for row in rows %}
+      <li>
+        <span>{{ row.title }}</span>
+        <span>{{ row.percent }}% · модулей {{ row.completed_modules }}/{{ row.total_modules }} · {{ row.status }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Назначенных курсов нет.</p>
+{% endif %}
+<p class="hint">Продолжить обучение: Telegram /continue</p>
+{% endblock %}

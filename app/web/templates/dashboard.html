@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="eyebrow">Панель</p>
+<h1>Здравствуйте, {{ current_user.full_name }}</h1>
+<p>Роли: {{ roles|join(", ") }}. ДИС не назначает должности и не увольняет.</p>
+
+{% if progress %}
+  <h2>Назначенные программы</h2>
+  <ul class="status-list">
+    {% for row in progress %}
+      <li>
+        <span>{{ row.title }}</span>
+        <span>{{ row.percent }}% · {{ row.status }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="hint">Назначенных курсов пока нет или эта роль работает с каталогом.</p>
+{% endif %}
+{% endblock %}

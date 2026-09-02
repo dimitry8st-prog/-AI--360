@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row-head">
+  <h1>Курсы</h1>
+  {% if can_manage %}<a class="button" href="/courses/new">Создать курс</a>{% endif %}
+</div>
+
+{% if catalog %}
+  <ul class="status-list">
+    {% for course in catalog %}
+      <li>
+        <a href="/courses/{{ course.id }}">{{ course.title }}</a>
+        <span class="pill">{{ course.status }} · v{{ course.version }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if assigned %}
+  <h2>Назначено вам</h2>
+  <ul class="status-list">
+    {% for course, enrollment in assigned %}
+      <li>
+        <span>{{ course.title }}</span>
+        <span>{{ enrollment.status }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+  <p class="hint">Проходите курс в Telegram: /courses</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Этап 2 · обучение</p>
+  <h1>Система запущена</h1>
+  <p>
+    ДИС помогает учиться по утверждённым материалам. Сотрудник проходит курс в Telegram.
+    Методист и руководитель работают в этой панели. Кадровые решения остаются за человеком.
+  </p>
+</section>
+
+<ul class="status-list">
+  <li><span class="label">Окружение</span> <span>{{ app_env }}</span></li>
+  <li>
+    <span class="label">LLM</span>
+    <span class="pill {% if llm_mode == 'stub' %}pill-warn{% else %}pill-ok{% endif %}">{{ llm_mode }}</span>
+  </li>
+  <li>
+    <span class="label">Telegram</span>
+    <span class="pill {% if telegram_ready %}pill-ok{% else %}pill-warn{% endif %}">
+      {% if telegram_ready %}токен задан{% else %}токен не задан, бот в ожидании{% endif %}
+    </span>
+  </li>
+</ul>
+<p class="hint">Демовход: <code>employee@demo.local</code> / пароль из README. Затем откройте Telegram и напишите боту свой email.</p>
+{% endblock %}

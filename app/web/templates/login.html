@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Вход</h1>
+<p>Web-панель для методиста, руководителя и администратора. Сотрудник учится в Telegram.</p>
+<form method="post" action="/login" class="card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>Email
+    <input type="email" name="email" required autocomplete="username">
+  </label>
+  <label>Пароль
+    <input type="password" name="password" required autocomplete="current-password">
+  </label>
+  <button type="submit">Войти</button>
+</form>
+{% endblock %}

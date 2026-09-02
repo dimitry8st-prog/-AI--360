@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: block-dotenv
+        name: block committed .env
+        entry: python -c "import sys; sys.exit(1 if any(p.endswith('.env') and not p.endswith('.env.example') for p in sys.argv[1:]) else 0)"
+        language: system
+        files: \.env$

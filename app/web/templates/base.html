@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ title or "AI-наставник 360" }}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mascot" aria-hidden="true">🦊</span>
+      <div>
+        <strong>ДИС</strong>
+        <span class="muted">цифровой лис · AI-наставник 360</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Основное меню">
+      {% if current_user %}
+        <a href="/dashboard">Панель</a>
+        <a href="/courses">Курсы</a>
+        <a href="/progress">Прогресс</a>
+        {% if "manager" in current_user.role_names or "admin" in current_user.role_names %}
+          <a href="/assignments">Назначения</a>
+        {% endif %}
+        <span class="who">{{ current_user.full_name }}</span>
+        <form class="inline" method="post" action="/logout">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" class="linkish">Выйти</button>
+        </form>
+      {% else %}
+        <a href="/login">Вход</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="container">
+    {% if notice %}<p class="banner banner-ok" role="status">{{ notice }}</p>{% endif %}
+    {% if error %}<p class="banner banner-risk" role="alert">{{ error }}</p>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    Бот не принимает кадровые решения и не подтверждает квалификацию без человека, если это требует политика программы.
+  </footer>
+</body>
+</html>
